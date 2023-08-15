@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <div class="date">
+          <p id="date"></p>
+        </div>
+        <div class="day-name">
+          <p class="day" id="day"></p>
+        </div>
+        <div class="clock grid--4-col">
+          <div class="clock-col">
+            <p id="hours"></p>
+            <p class="clock-label">Hours</p>
+          </div>
+          <div class="clock-col">
+            <p id="minutes"></p>
+            <p class="clock-label">Minutes</p>
+          </div>
+          <div class="clock-col">
+            <p id="seconds"></p>
+            <p class="clock-label">Seconds</p>
+          </div>
+          <div class="clock-col session">
+            <p id="session"></p>
+          </div>
+        </div>
+        <br>
+        <div class="container--btn el">
+            <button id="toggle-btn">12-hr / 24-hr</button>
+        </div>
+      </div>
+  
+<script>
+
+  const dateElement = document.getElementById("date");
+  const dayElement = document.getElementById("day");
+  const hoursElement = document.getElementById("hours");
+  const minutesElement = document.getElementById("minutes");
+  const secondsElement = document.getElementById("seconds");
+  const sessionElement = document.getElementById("session");
+  const toggleButton = document.getElementById("toggle-btn");
+
+//time//
+function updateTime(){
+  const now = new Date();
+
+// the date//
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    dateElement.textContent = now.toLocaleDateString(undefined, options);
+    
+
+//dayss//
+  const daysOfweek = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday", "Saturday"];
+  
+
+//hours//
+let hours = now.getHours();
+
+//minutess//
+const minutes = now.getMinutes();
+
+//secoonds//
+const seconds = now.getSeconds();
+
+//timeee//
+sessionElement.textContent = hours >= 12 ? "PM":"AM"
+
+if (hours > 12) {
+    hours -=12;
+}
+
+hoursElement.textContent = hours < 10 ? "0" + hours : hours;
+minutesElement.textContent = minutes <10 ? "0" + minutes : minutes;
+secondsElement.textContent = seconds <10 ? "0" + seconds : seconds;
+
+}
+
+
+// make button change to 24 hour clock when clicked.//
+
+function toggleTimeFormat() {
+  const currentTimeFormat = hoursElement.textContent.includes(":") ? 24 : 12;
+  updateTime();
+  
+  if (currentTimeFormat === 12) {
+    hoursElement.textContent = parseInt(hoursElement.textContent) + 12; 
+    sessionElement.textContent = "";
+  } else {
+    hoursElement.textContent = parseInt(hoursElement.textContent) % 24; 
+    sessionElement.textContent = "PM"; 
+  }
+}
+  
+  updateTime();
+  
+  // Update the time every second//
+  setInterval(updateTime, 1000);
+
+
+  toggleButton.addEventListener('click', toggleTimeFormat);
+</script>
+      
+</body>
+</html>
+
